@@ -1,0 +1,17 @@
+{
+    "name": "permit-manager-browser-tests",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "check": "node --test tooling/*.test.js && node tooling/check.js && biome check --error-on-warnings . && npm audit --audit-level=moderate",
+        "format": "biome check --write .",
+        "test": "playwright test"
+    },
+    "devDependencies": {
+        "@axe-core/playwright": "4.14.0",
+        "@biomejs/biome": "2.6.8",
+        "@playwright/test": "1.65.1",
+        "jsqr": "1.4.0",
+        "pngjs": "7.0.0"
+    }
+}

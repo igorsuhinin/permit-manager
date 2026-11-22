@@ -1,0 +1,63 @@
+version: 2
+
+multi-ecosystem-groups:
+  browser-tools:
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+
+updates:
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      runtime:
+        dependency-type: production
+        update-types: [minor, patch]
+      development:
+        dependency-type: development
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+    groups:
+      actions:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: docker
+    directories: [/, /docker]
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+    allow:
+      - dependency-name: php
+      - dependency-name: composer
+      - dependency-name: mysql
+      - dependency-name: rhysd/actionlint
+    groups:
+      containers:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  # A single PR proposes package/lockfile and browser-image changes together.
+  # The toolchain check still rejects incompatible versions; review remains required.
+  - package-ecosystem: npm
+    directory: /tests/Browser
+    patterns: ["*"]
+    multi-ecosystem-group: browser-tools
+
+  - package-ecosystem: docker
+    directory: /tests/Browser
+    patterns: [mcr.microsoft.com/playwright]
+    multi-ecosystem-group: browser-tools

@@ -1,0 +1,100 @@
+.Audiowide {
+    font-family: 'Audiowide', cursive;
+}
+
+.Raleway {
+    font-family: 'Raleway Dots', cursive;
+}
+
+.Faster {
+    font-family: 'Faster One', cursive;
+}
+
+.Fugaz {
+    font-family: 'Fugaz One', cursive;
+}
+
+.wrapper {
+    width: 148mm;
+    height: 105mm;
+    border: 1px dotted #000;
+    position: relative;
+    padding-right: 1cm;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.wrapper--terms {
+    float: left;
+}
+
+h1 {
+    text-align: center;
+}
+
+.qr {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    height: 35mm;
+    z-index: -1;
+}
+
+.smaller {
+    font-size: 1.3em;
+}
+
+.Plate {
+    font-family: 'Alte DIN 1451 Mittelschrift gepraegt', 'Comic Sans MS';
+    font-weight: normal;
+    font-style: normal;
+    letter-spacing: 0.1em;
+    border: 3px solid #000;
+    border-radius: 5px;
+    text-shadow: 0 0 5px #6e6e6e;
+    height: 26mm;
+    font-size: 22mm;
+    width: 121mm;
+    margin: 1cm auto 0;
+    text-align: center;
+}
+
+.eula {
+    font-family: 'Arial Black';
+    padding: 1cm;
+    margin-top: 2cm;
+}
+
+.admin-toolbar {
+    font: 16px system-ui, sans-serif;
+    display: flex;
+    gap: 24px;
+    padding: 16px;
+    margin-bottom: 24px;
+    background: #f8f9fa;
+}
+
+.admin-toolbar a {
+    color: #0d6efd;
+}
+
+.admin-notice {
+    font: 16px system-ui, sans-serif;
+    padding: 16px;
+    margin-bottom: 24px;
+    color: #0a3622;
+    background: #d1e7dd;
+    border: 1px solid #a3cfbb;
+}
+
+.admin-notice:focus {
+    outline: 3px solid #0a58ca;
+    outline-offset: 3px;
+}
+
+@media print {
+    .admin-toolbar,
+    .admin-notice {
+        display: none;
+    }
+}

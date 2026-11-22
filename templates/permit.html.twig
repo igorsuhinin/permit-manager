@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ public_text('permit.title') }}</title>
+    <link href="/vendor/fonts/fonts.css?v=2"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/permit/assets/fonts/stylesheet.css">
+    <link rel="stylesheet" href="/permit/style.css">
+    <style nonce="{{ cspNonce }}">
+        {% include 'permit.css.twig' ignore missing %}
+    </style>
+</head>
+<body>
+<nav class="admin-toolbar" lang="{{ locale }}" aria-label="{{ 'administration'|trans(locale) }}">
+    <a href="/admin/permits">{{ 'permits'|trans(locale) }}</a>
+    <a href="/admin/permits/generate">{{ 'generate'|trans(locale) }}</a>
+    <span>{{ 'print_hint'|trans(locale) }}</span>
+</nav>
+{% include 'admin/notice.html.twig' %}
+<div class="wrapper">
+    <img class="qr" src="{{ qrimage }}" alt="{{ qrtext }}">
+    <h1 class="Raleway">{{ public_text('permit.number', {'%id%': permit.id}) }}</h1>
+    {% if permit.guest %}
+    <h1 class="Raleway smaller"> {{ public_text('permit.apartment', {'%apartment%': permit.apartment}) }}
+        <div class="Plate">{{ public_text('permit.guest_plate') }}</div>
+        {% else %}
+            <h1 class="Raleway smaller">{{ public_text('permit.vehicle') }}</h1>
+            <div class="Plate">{{ permit.plate }}</div>
+        {% endif %}
+        <h1 class="Raleway smaller">{{ public_text('permit.parking', {'%vehicle%': permit.guest ? public_text('permit.guest_vehicle_prefix') : ''}) }}</h1>
+        <h1 class="Raleway smaller">{{ public_text('permit.valid_until', {'%term%': permit.term}) }}</h1>
+</div>
+<div class="wrapper wrapper--terms">
+    <div class="eula">
+        {% if permit.guest %}
+        <p>{{ public_text('permit.guest_terms') }}</p>
+        {% else %}
+        <p>
+        {{ public_text('permit.resident_terms') }}
+        </p>
+        {% endif %}
+
+        <p>{{ public_text('permit.nontransferable') }}</p>
+    </div>
+</div>
+<script type="module" src="/assets/admin.js?v=2"></script>
+{% if autoPrint %}<script type="module" src="/assets/permit-print.js?v=1"></script>{% endif %}
+</body>
+</html>

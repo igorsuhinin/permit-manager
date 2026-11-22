@@ -1,0 +1,28 @@
+.admin-navigation { width: 100%; }
+.confirmation-dialog { width: min(28rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); color: var(--bs-body-color); background: var(--bs-body-bg); }
+.confirmation-dialog::backdrop { background: rgba(0, 0, 0, .45); }
+#confirmation-message { overflow-wrap: anywhere; }
+.text-secondary { color: #59636d !important; }
+.btn-outline-primary { --bs-btn-color: #0a58ca; --bs-btn-border-color: #0a58ca; }
+.btn-outline-secondary { --bs-btn-color: #59636d; --bs-btn-border-color: #59636d; }
+@media (min-width: 992px) { .admin-navigation { width: auto; } }
+.language-switcher { position: relative; }
+.language-switcher summary { list-style: none; min-height: 32px; }
+.language-switcher summary::-webkit-details-marker { display: none; }
+.language-switcher summary::after { content: ""; margin-left: .25rem; border: .3em solid transparent; border-top-color: currentColor; transform: translateY(.15em); }
+.language-switcher[open] summary::after { transform: rotate(180deg) translateY(.15em); }
+:is(a, button, input, select, summary, [tabindex]):focus-visible,
+#form-error:focus,
+#action-notice:focus { outline: 3px solid #0a58ca; outline-offset: 3px; }
+.skip-link { position: absolute; top: .5rem; left: 1rem; z-index: 1100; padding: .5rem 1rem; background: #fff; color: #084298; }
+.language-switcher .dropdown-menu { right: 0; left: auto; min-width: 11rem; margin-top: .5rem; }
+.language-switcher .dropdown-item { min-height: 44px; }
+#ui-datepicker-div .ui-state-highlight:not(.ui-state-active) { color: #585700; }
+#ui-datepicker-div .ui-state-active { color: #fff; background: #0a58ca; border-color: #0a58ca; }
+#ui-datepicker-div .ui-datepicker-current { opacity: 1; }
+@media (max-width: 991px) {
+    nav.container:has(.language-switcher[open]),
+    nav.container:has(.language-switcher[open]) > .ms-auto { align-items: flex-start !important; }
+    .language-switcher[open] { width: 5rem; }
+    .language-switcher[open] .dropdown-menu { position: static; margin-left: calc(100% - 11rem); }
+}

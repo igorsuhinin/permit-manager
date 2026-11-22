@@ -1,0 +1,21 @@
+<details class="language-switcher">
+    <summary class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" title="{{ languageLinks[locale].label }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="9"/>
+            <ellipse cx="12" cy="12" rx="4" ry="9"/>
+            <path d="M3 12h18"/>
+        </svg>
+        <span class="visually-hidden">{{ 'language'|trans(locale) }}: <span lang="{{ locale }}">{{ languageLinks[locale].label }}</span></span>
+        <span aria-hidden="true">{{ locale|upper }}</span>
+    </summary>
+    <ul class="dropdown-menu show shadow-sm" aria-label="{{ 'language'|trans(locale) }}">
+        {% for code, language in languageLinks %}
+        <li>
+            <a class="dropdown-item d-flex align-items-center justify-content-between gap-3{{ code == locale ? ' active' : '' }}" href="{{ language.url }}" lang="{{ code }}" hreflang="{{ code }}"{% if code == locale %} aria-current="true"{% endif %}>
+                <span>{{ language.label }}</span>
+                {% if code == locale %}<span aria-hidden="true">✓</span>{% endif %}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</details>

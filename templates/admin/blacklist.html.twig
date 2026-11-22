@@ -1,0 +1,64 @@
+{% extends 'admin/layout.html.twig' %}
+{% set activePage = 'blacklist' %}
+{% block title %}{{ 'blacklist.title'|trans(locale) }}{% endblock %}
+{% block confirmation %}{% include 'admin/confirmation.html.twig' %}{% endblock %}
+{% block content %}
+<h1 id="blacklist-title" class="h3 mb-2">{{ 'blacklist.title'|trans(locale) }}</h1>
+<p class="text-secondary mb-4">{{ 'blacklist.description'|trans(locale) }}</p>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h2 class="h5">{{ 'blacklist.add'|trans(locale) }}</h2>
+        {% include 'admin/error.html.twig' %}
+        <form method="post" action="/admin/blacklist" class="row g-3 align-items-end"{% if error %} aria-describedby="form-error"{% endif %}>
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+            <input type="hidden" name="action" value="add">
+            <div class="col-md-4">
+                <label class="form-label" for="blacklist-id">{{ 'permit_id'|trans(locale) }}</label>
+                <input class="form-control" id="blacklist-id" name="id" value="{{ id }}" maxlength="255" placeholder="DEMO-001" required>
+            </div>
+            <div class="col-md">
+                <label class="form-label" for="blacklist-reason">{{ 'blacklist.reason'|trans(locale) }}</label>
+                <input class="form-control" id="blacklist-reason" name="reason" value="{{ reason }}" maxlength="2000">
+            </div>
+            <div class="col-md-auto"><button class="btn btn-danger" type="submit">{{ 'blacklist.add'|trans(locale) }}</button></div>
+        </form>
+    </div>
+</div>
+<form class="row g-2 mb-3" method="get" action="/admin/blacklist" role="search">
+    <div class="col">
+        <label class="visually-hidden" for="blacklist-search">{{ 'blacklist.search'|trans(locale) }}</label>
+        <input class="form-control" id="blacklist-search" type="search" name="q" value="{{ q }}" placeholder="{{ 'permit_id'|trans(locale) }}" maxlength="200">
+    </div>
+    <div class="col-auto"><button class="btn btn-primary" type="submit">{{ 'search'|trans(locale) }}</button></div>
+    {% if q is not same as('') %}<div class="col-auto"><a class="btn btn-outline-secondary" href="/admin/blacklist">{{ 'clear'|trans(locale) }}</a></div>{% endif %}
+</form>
+<div class="card shadow-sm table-responsive" role="region" aria-labelledby="blacklist-title" tabindex="0">
+    <table class="table align-middle mb-0" aria-labelledby="blacklist-title">
+        <thead class="table-light"><tr><th scope="col">{{ 'permit_id'|trans(locale) }}</th><th scope="col">{{ 'blacklist.reason'|trans(locale) }}</th><th scope="col" class="text-end">{{ 'blacklist.actions'|trans(locale) }}</th></tr></thead>
+        <tbody>
+        {% for entry in entries %}
+            <tr>
+                <th scope="row" class="fw-normal">{{ entry.id }}</th>
+                <td>{{ entry.reason ?? '—' }}</td>
+                <td class="text-end">
+                    <form method="post" action="/admin/blacklist" data-confirm="{{ 'blacklist.confirm_remove'|trans(locale, {'%id%': entry.id}) }}">
+                        <input type="hidden" name="csrf" value="{{ csrf }}">
+                        <input type="hidden" name="action" value="remove">
+                        <input type="hidden" name="id" value="{{ entry.id }}">
+                        <button class="btn btn-outline-secondary btn-sm" type="submit" disabled>{{ 'blacklist.remove'|trans(locale) }}</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="3" class="text-center text-secondary py-4">{{ (q is not same as('') ? 'blacklist.no_matches' : 'blacklist.empty')|trans(locale) }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<noscript><p class="text-secondary mt-3">{{ 'blacklist.enable_javascript'|trans(locale) }}</p></noscript>
+<nav class="d-flex justify-content-between align-items-center mt-3" aria-label="{{ 'blacklist.pages'|trans(locale) }}">
+    <div>{% if page > 1 %}<a class="btn btn-outline-secondary btn-sm" href="{{ previousUrl }}">{{ 'previous'|trans(locale) }}</a>{% endif %}</div>
+    <span class="small text-secondary">{{ 'blacklist.page_summary'|trans(locale, {'%page%': page, '%limit%': 25}) }}</span>
+    <div>{% if hasNext %}<a class="btn btn-outline-secondary btn-sm" href="{{ nextUrl }}">{{ 'next'|trans(locale) }}</a>{% endif %}</div>
+</nav>
+{% endblock %}

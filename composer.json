@@ -1,0 +1,108 @@
+{
+    "name": "app/permit-manager",
+    "description": "Parking permit generation and verification for private parking",
+    "type": "project",
+    "license": "0BSD",
+    "require": {
+        "php": "^8.5",
+        "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-simplexml": "*",
+        "doctrine/dbal": "^4.6",
+        "doctrine/migrations": "^3.9.8",
+        "endroid/qr-code": "^6.2",
+        "monolog/monolog": "^3.13.0",
+        "php-di/php-di": "^7.1.1",
+        "psr/clock": "^1.0",
+        "psr/http-factory": "^1.1",
+        "psr/http-message": "^2.0",
+        "psr/http-server-handler": "^1.0.2",
+        "psr/http-server-middleware": "^1.0.2",
+        "psr/log": "^3.0.2",
+        "sentry/sentry": "^4.37.1",
+        "slim/psr7": "^1.8.1",
+        "slim/slim": "^4.15.3",
+        "symfony/console": "^8.1.11",
+        "symfony/translation": "^8.1.11",
+        "twig/twig": "^3.30"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "Database\\Migrations\\": "migrations/"
+        }
+    },
+    "config": {
+        "platform-check": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
+    },
+    "require-dev": {
+        "deptrac/deptrac": "^4.7.2",
+        "friendsofphp/php-cs-fixer": "^3.95.32",
+        "infection/infection": "^0.35.12",
+        "phpstan/phpstan": "^2.3.6",
+        "phpstan/phpstan-deprecation-rules": "^2.0.5",
+        "phpstan/phpstan-phpunit": "^2.1.2",
+        "phpstan/phpstan-strict-rules": "^2.1.1",
+        "phpunit/phpunit": "^13.4.7",
+        "rector/rector": "^2.8.5",
+        "squizlabs/php_codesniffer": "^4.0.4",
+        "symfony/yaml": "^8.1.11",
+        "vimeo/psalm": "^7.10"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "setup": "@php bin/console.php app:setup",
+        "doctor": "@php bin/console.php app:doctor",
+        "warm-cache": "@php bin/warm-cache.php",
+        "test": "phpunit",
+        "prune-checks": "@php bin/console.php checks:prune",
+        "test-mysql": "phpunit --configuration=phpunit.mysql.xml.dist --log-junit=.phpunit.cache/mysql/junit.xml",
+        "stan": "phpstan analyse --memory-limit=512M",
+        "psalm": "psalm --config=psalm.xml --no-progress --no-diff",
+        "cs-check": [
+            "php-cs-fixer fix --dry-run --diff",
+            "@phpcs"
+        ],
+        "cs-fix": [
+            "@phpcbf",
+            "php-cs-fixer fix"
+        ],
+        "check": [
+            "@composer validate --strict",
+            "@assets-check",
+            "@coverage",
+            "@stan",
+            "@psalm",
+            "@architecture",
+            "@lint-templates",
+            "@cs-check",
+            "@rector",
+            "@composer audit"
+        ],
+        "rector": "rector process --dry-run",
+        "rector-fix": "rector process",
+        "infection": "@php -d pcov.enabled=1 vendor/bin/infection --initial-tests-php-options=\"-d pcov.enabled=1\" --no-progress",
+        "assets-check": "@php bin/check-assets.php",
+        "lint-templates": "@php bin/lint-templates.php",
+        "migrations": "doctrine-migrations",
+        "architecture": [
+            "deptrac analyse --no-progress --fail-on-uncovered --report-uncovered",
+            "deptrac debug:unassigned"
+        ],
+        "phpcs": "phpcs",
+        "phpcbf": "phpcbf",
+        "coverage": [
+            "@php -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit --coverage-clover=.phpunit.cache/coverage/clover.xml --coverage-html=.phpunit.cache/coverage/html --coverage-text --only-summary-for-coverage-text",
+            "@php bin/check-coverage.php"
+        ]
+    }
+}

@@ -1,0 +1,58 @@
+{% extends 'admin/layout.html.twig' %}
+{% set activePage = 'permits' %}
+{% block title %}{{ 'permits'|trans(locale) }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
+    <div>
+        <h1 id="permits-title" class="h3 mb-1">{{ 'parking_permits'|trans(locale) }}</h1>
+        <p class="text-secondary mb-0">{{ 'recorded_only'|trans(locale) }}</p>
+    </div>
+    <a class="btn btn-outline-primary" href="/admin/permits/generate">{{ 'generate'|trans(locale) }}</a>
+</div>
+<form class="row g-2 mb-4" method="get" action="/admin/permits" role="search">
+    <div class="col-12 col-sm">
+        <label class="visually-hidden" for="search">{{ 'search_permits'|trans(locale) }}</label>
+        <input class="form-control" id="search" type="search" name="q" value="{{ q }}" placeholder="{{ 'search_placeholder'|trans(locale) }}" maxlength="200">
+    </div>
+    <div class="col-auto"><button class="btn btn-primary" type="submit">{{ 'search'|trans(locale) }}</button></div>
+    {% if q is not same as('') %}<div class="col-auto"><a class="btn btn-outline-secondary" href="/admin/permits">{{ 'clear'|trans(locale) }}</a></div>{% endif %}
+</form>
+<div class="card shadow-sm">
+    <div class="table-responsive" role="region" aria-labelledby="permits-title" tabindex="0">
+        <table class="table table-hover align-middle mb-0" aria-labelledby="permits-title">
+            <thead class="table-light">
+                <tr><th scope="col">{{ 'permit_id'|trans(locale) }}</th><th scope="col">{{ 'type'|trans(locale) }}</th><th scope="col">{{ 'plate'|trans(locale) }}</th><th scope="col">{{ 'apartment'|trans(locale) }}</th><th scope="col">{{ 'valid_until'|trans(locale) }}</th><th scope="col">{{ 'status'|trans(locale) }}</th><th scope="col">{{ 'issued'|trans(locale) }}</th><th scope="col">{{ 'actions'|trans(locale) }}</th></tr>
+            </thead>
+            <tbody>
+            {% for item in permits %}
+                {% set permit = item.record.permit %}
+                <tr>
+                    <th scope="row" class="fw-normal">{{ permit.id }}</th>
+                    <td>{{ (permit.guest ? 'guest' : 'resident')|trans(locale) }}</td>
+                    <td>{{ permit.guest ? '—' : permit.plate }}</td>
+                    <td>{{ permit.apartment is same as('') ? '—' : permit.apartment }}</td>
+                    <td class="text-nowrap">{{ item.record.expiresOn|date('d.m.Y') }}</td>
+                    <td><span class="badge {{ item.status.value == 'Valid' ? 'text-bg-success' : (item.status.value == 'Revoked' ? 'text-bg-danger' : 'text-bg-secondary') }}">{{ ('status.' ~ item.status.value)|trans(locale) }}</span></td>
+                    <td class="text-nowrap">{{ item.record.createdAt|date('d.m.Y H:i', timezone) }}</td>
+                    <td>
+                        {% if item.status.value == 'Valid' %}
+                        <form method="post" action="/admin/permits/{{ item.record.fingerprint }}/reprint">
+                            <input type="hidden" name="csrf" value="{{ csrf }}">
+                            <button class="btn btn-outline-primary btn-sm text-nowrap" type="submit">{{ 'reprint'|trans(locale) }}</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="8" class="text-center text-secondary py-5">{{ (q is not same as('') ? 'no_matches' : 'no_permits')|trans(locale) }}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<nav class="d-flex justify-content-between align-items-center mt-3" aria-label="{{ 'permit_pages'|trans(locale) }}">
+    <div>{% if page > 1 %}<a class="btn btn-outline-secondary btn-sm" href="{{ previousUrl }}">{{ 'previous'|trans(locale) }}</a>{% endif %}</div>
+    <span class="small text-secondary">{{ 'page_summary'|trans(locale, {'%page%': page, '%limit%': 25}) }}</span>
+    <div>{% if hasNext %}<a class="btn btn-outline-secondary btn-sm" href="{{ nextUrl }}">{{ 'next'|trans(locale) }}</a>{% endif %}</div>
+</nav>
+{% endblock %}

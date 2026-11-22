@@ -1,0 +1,18 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": ["src/Domain", "src/Application"]
+    },
+    "timeout": 10,
+    "threads": 2,
+    "minMsi": 95,
+    "minCoveredMsi": 95,
+    "tmpDir": ".infection.cache",
+    "logs": {
+        "text": ".infection.cache/infection.log",
+        "summary": ".infection.cache/summary.log"
+    },
+    "mutators": {
+        "@default": true
+    }
+}

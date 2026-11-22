@@ -1,0 +1,2 @@
+# Fail closed if the application directory is accidentally used as a document root.
+Require all denied

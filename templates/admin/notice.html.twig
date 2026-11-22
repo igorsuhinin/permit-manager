@@ -1,0 +1,3 @@
+{% if notice %}
+<div id="action-notice" class="admin-notice alert alert-success" role="status" lang="{{ locale }}" tabindex="-1">{{ notice.value|trans(locale) }}</div>
+{% endif %}

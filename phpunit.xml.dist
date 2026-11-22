@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/13.0/phpunit.xsd"
+         bootstrap="tests/bootstrap.php" cacheDirectory=".phpunit.cache"
+         failOnAllIssues="true" failOnEmptyTestSuite="true"
+         displayDetailsOnAllIssues="true"
+         backupGlobals="true" beStrictAboutChangesToGlobalState="true"
+         beStrictAboutOutputDuringTests="true"
+         requireCoverageMetadata="true" beStrictAboutCoverageMetadata="true">
+    <testsuites>
+        <testsuite name="Unit"><directory>tests/Unit</directory></testsuite>
+        <testsuite name="Functional"><directory>tests/Functional</directory></testsuite>
+    </testsuites>
+    <source ignoreSuppressionOfDeprecations="true" ignoreSuppressionOfPhpDeprecations="true"><include>
+        <directory>src</directory>
+        <directory>migrations</directory>
+        <file>public/index.php</file>
+    </include></source>
+    <coverage includeUncoveredFiles="true"/>
+    <php>
+        <env name="APP_ENV" value="test" force="true"/>
+        <env name="TWIG_CACHE_ENABLED" value="" force="true"/>
+        <env name="TWIG_CACHE_DIRECTORY" value="" force="true"/>
+        <env name="TWIG_CACHE_VERSION" value="" force="true"/>
+        <env name="SENTRY_DSN" value="" force="true"/>
+        <env name="INITIAL_SETTINGS_CONFIG" value="tests/Fixtures/initial-settings.php" force="true"/>
+        <env name="INITIAL_BLACKLIST_CONFIG" value="tests/Fixtures/initial-blacklist.php" force="true"/>
+        <env name="PUBLIC_TEMPLATE_DIRECTORY" value="tests/Fixtures/public-templates" force="true"/>
+        <env name="PUBLIC_UI_CONFIG" value="config/public-ui.example.php" force="true"/>
+    </php>
+</phpunit>

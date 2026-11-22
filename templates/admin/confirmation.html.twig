@@ -1,0 +1,10 @@
+<dialog id="confirmation-dialog" class="confirmation-dialog border-0 rounded-3 shadow p-0" aria-labelledby="confirmation-title" aria-describedby="confirmation-message">
+    <form method="dialog" class="p-4 m-0">
+        <h2 id="confirmation-title" class="h5 mb-3">{{ (confirmationTitle ?? 'blacklist.confirm_title')|trans(locale) }}</h2>
+        <p id="confirmation-message" class="mb-4"></p>
+        <div class="d-flex flex-wrap justify-content-end gap-2">
+            <button class="btn btn-outline-secondary" type="submit" value="cancel" autofocus>{{ 'cancel'|trans(locale) }}</button>
+            <button class="btn btn-danger" type="submit" value="confirm">{{ (confirmationAction ?? 'blacklist.remove')|trans(locale) }}</button>
+        </div>
+    </form>
+</dialog>

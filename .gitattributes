@@ -1,0 +1,3 @@
+# Preserve upstream files verbatim, including license whitespace and integrity hashes.
+public/vendor/** -text linguist-vendored -whitespace
+public/permit/assets/** -text

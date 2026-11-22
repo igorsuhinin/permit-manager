@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ 'admin'|trans(locale) }}{% endblock %}</title>
+    <link href="/vendor/bootstrap/5.3.8/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/admin.css" rel="stylesheet">
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-light">
+<a class="skip-link visually-hidden-focusable" href="#main-content">{{ 'skip_content'|trans(locale) }}</a>
+<header class="bg-white border-bottom mb-4">
+    <nav class="container d-flex flex-wrap align-items-center gap-3 py-3" aria-label="{{ 'administration'|trans(locale) }}">
+        <a class="fw-bold fs-5 text-dark text-decoration-none" href="/admin">{{ 'admin'|trans(locale) }}</a>
+        <div class="ms-auto order-lg-2 d-flex align-items-center gap-3">
+            {% block account %}{% endblock %}
+            {% include 'admin/language-switcher.html.twig' %}
+        </div>
+        {% block navigation %}{% endblock %}
+    </nav>
+</header>
+<main id="main-content" class="container pb-5" tabindex="-1">
+    {% include 'admin/notice.html.twig' %}
+    {% block content %}{% endblock %}
+</main>
+{% block confirmation %}{% endblock %}
+<script type="module" src="/assets/admin.js?v=2"></script>
+<script type="module" src="/assets/language-switcher.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,9 @@
+services:
+  php:
+    volumes:
+      - ./tests/Fixtures/demo-initial-settings.php:/run/demo-initial-settings.php:ro
+    ports:
+      - "127.0.0.1:${DEMO_HTTP_PORT:-18080}:80"
+    environment:
+      INITIAL_SETTINGS_CONFIG: /run/demo-initial-settings.php
+      DEMO_HTTP_PORT: ${DEMO_HTTP_PORT:-18080}

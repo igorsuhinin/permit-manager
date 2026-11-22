@@ -1,0 +1,56 @@
+# Synthetic browser/demo environment; no development source, private files, or database volumes.
+services:
+  php:
+    image: permit-manager-browser-php
+    build:
+      context: .
+      target: runtime
+    volumes:
+      - ${BROWSER_RELEASE_DIRECTORY:?Run make test-browser or make demo}:/var/www/demo:ro
+      - ./tests/Support/browser-fixtures.php:/run/browser-fixtures.php:ro
+      - ./tests/Support/benchmark.php:/run/benchmark.php:ro
+      - ./tests/Fixtures/initial-settings.php:/run/initial-settings.php:ro
+    working_dir: /var/www/demo/app
+    environment:
+      APP_ENV: browser
+      APACHE_DOCUMENT_ROOT: /var/www/demo/app/public
+      DB_HOST: mysql-test
+      DB_PORT: "3306"
+      DB_DATABASE: permits_test
+      DB_USERNAME: permits_test
+      DB_PASSWORD: permits_test
+      INITIAL_SETTINGS_CONFIG: /run/initial-settings.php
+      INITIAL_BLACKLIST_CONFIG: /var/www/demo/app/config/initial-blacklist.example.php
+      PUBLIC_UI_CONFIG: /var/www/demo/app/config/public-ui.example.php
+      PUBLIC_TEMPLATE_DIRECTORY: /var/www/demo/empty-templates
+      CHECK_HISTORY_LOCK_FILE: /tmp/browser-history.lock
+      TWIG_CACHE_DIRECTORY: /tmp/permit-benchmark-twig
+      TWIG_CACHE_ENABLED: ${BENCHMARK_TWIG_CACHE_ENABLED:-}
+    depends_on:
+      mysql-test:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/health') === '{\"status\":\"ok\"}' ? 0 : 1);"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+
+  mysql-test:
+    extends:
+      file: compose.test.yaml
+      service: mysql-test
+
+  browser:
+    image: permit-manager-browser-tools
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: tests/Browser/Dockerfile
+    init: true
+    shm_size: 1gb
+    user: "${BROWSER_UID:-1000}:${BROWSER_GID:-1000}"
+    volumes:
+      - ./docs/screenshots:/work/snapshots
+      - ${BROWSER_REPORT_DIRECTORY:?Run make test-browser}:/reports
+      - ${BROWSER_RELEASE_DIRECTORY:?Run make test-browser}/fixtures:/fixtures:ro

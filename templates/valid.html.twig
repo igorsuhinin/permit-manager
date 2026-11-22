@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ public_text('check.title') }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="/permit/check.css">
+    <style nonce="{{ cspNonce }}">
+        {% include 'public-check.css.twig' ignore missing %}
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="qr status-valid" aria-hidden="true"></div>
+    <h1>{{ public_text('check.number', {'%guest%': permit.guest ? public_text('permit.guest_prefix') : '', '%id%': permit.id}) }}</h1>
+    <h2 class="valid">{{ public_text('check.valid') }}</h2>
+    {% if permit.guest %}
+    <h1 class="smaller">{{ public_text('check.guest_vehicle', {'%apartment%': permit.apartment}) }}</h1>
+    {% else %}
+    <h1 class="smaller">{{ public_text('permit.vehicle') }}</h1>
+    <div class="Plate">{{ permit.plate }}</div>
+    {% endif %}
+    <h1 class="smaller">{{ public_text('check.parking') }}</h1>
+    <h1 class="smaller">{{ public_text('check.valid_until') }}<br> {{ permit.term }}</h1>
+</div>
+
+</body>
+</html>

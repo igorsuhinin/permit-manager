@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ 'sign_in'|trans(locale) }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-4">{{ 'sign_in'|trans(locale) }}</h1>
+                {% include 'admin/error.html.twig' %}
+                <form method="post" action="/admin/login"{% if error %} aria-describedby="form-error"{% endif %}>
+                    <input type="hidden" name="csrf" value="{{ csrf }}">
+                    <div class="mb-3">
+                        <label class="form-label" for="username">{{ 'login'|trans(locale) }}</label>
+                        <input class="form-control" type="text" id="username" name="username" value="{{ username }}" autocomplete="username" required{% if not error %} autofocus{% endif %}>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="password">{{ 'password'|trans(locale) }}</label>
+                        <input class="form-control" type="password" id="password" name="password" autocomplete="current-password" required>
+                    </div>
+                    <button class="btn btn-primary w-100" type="submit">{{ 'sign_in'|trans(locale) }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

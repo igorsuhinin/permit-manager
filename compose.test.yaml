@@ -1,0 +1,28 @@
+# Disposable integration environment; never mount the development database volume.
+services:
+  php:
+    image: permit-manager-test-php
+    build: .
+    volumes:
+      - .:/var/www/html
+    environment:
+      COMPOSER_HOME: /tmp/composer
+    depends_on:
+      mysql-test:
+        condition: service_healthy
+
+  mysql-test:
+    image: mysql:8.4@sha256:a81d043930e51745522bd5c430961cf8286f0a23f0a9a2a6e0108f7ea71b0902
+    environment:
+      MYSQL_DATABASE: permits_test
+      MYSQL_USER: permits_test
+      MYSQL_PASSWORD: permits_test
+      MYSQL_ROOT_PASSWORD: test_root_only
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=permits_test mysql --protocol=TCP -h 127.0.0.1 -upermits_test permits_test -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 30s

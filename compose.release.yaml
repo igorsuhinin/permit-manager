@@ -1,0 +1,48 @@
+# Tests an extracted production archive without development dependencies or source mounts.
+services:
+  php:
+    image: permit-manager-release-php
+    build:
+      context: .
+      target: runtime
+    volumes:
+      - ${RELEASE_DIRECTORY:?Run make release-smoke}:/var/www/releases:ro
+      - ./tests/Support/release-fixtures.php:/run/release-fixtures.php:ro
+      - ./tests/Support/recovery-fixtures.php:/run/recovery-fixtures.php:ro
+      - ./tests/Support/cache-fixtures.php:/run/cache-fixtures.php:ro
+      - ./tests/Fixtures/initial-settings.php:/run/initial-settings.php:ro
+      - template-cache:/var/cache/permit-twig
+    working_dir: /var/www/releases/current
+    environment:
+      APACHE_DOCUMENT_ROOT: ${RELEASE_PUBLIC_DIRECTORY:-/var/www/releases/current/public}
+      APP_ROOT: ${RELEASE_APP_ROOT:-}
+      APP_ENV: production
+      TWIG_CACHE_DIRECTORY: /var/cache/permit-twig
+      TWIG_CACHE_VERSION: ${RELEASE_TWIG_CACHE_VERSION:-}
+      DB_HOST: mysql-test
+      DB_PORT: "3306"
+      DB_DATABASE: ${RELEASE_DB_DATABASE:-permits_test}
+      DB_USERNAME: permits_test
+      DB_PASSWORD: permits_test
+      INITIAL_SETTINGS_CONFIG: /run/initial-settings.php
+      CHECK_HISTORY_LOCK_FILE: /tmp/permit-check-history.lock
+      PUBLIC_UI_CONFIG: /var/www/releases/shared/public-ui.php
+      PUBLIC_TEMPLATE_DIRECTORY: /var/www/releases/shared/templates
+      INITIAL_BLACKLIST_CONFIG: /var/www/releases/shared/initial-blacklist.php
+    depends_on:
+      mysql-test:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/health') === '{\"status\":\"ok\"}' ? 0 : 1);"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+
+  mysql-test:
+    extends:
+      file: compose.test.yaml
+      service: mysql-test
+
+volumes:
+  template-cache:

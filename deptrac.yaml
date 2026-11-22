@@ -1,0 +1,173 @@
+deptrac:
+  paths:
+    - ./src
+    - ./config
+    - ./bootstrap
+    - ./bin
+    - ./migrations
+  ignore_uncovered_internal_classes: true
+  layers:
+    - name: DomainValues
+      collectors:
+        - type: classLike
+          value: '^App\\Domain\\Permit\\(?:Model|Enum|Exception)\\'
+    - name: DomainServices
+      collectors:
+        - type: classLike
+          value: '^App\\Domain\\Permit\\Service\\'
+    - name: DomainValidators
+      collectors:
+        - type: classLike
+          value: '^App\\Domain\\Permit\\Validator\\'
+    - name: DomainReadPorts
+      collectors:
+        - type: classLike
+          value: '^App\\Domain\\Permit\\Port\\PermitBlacklistInterface$'
+    - name: DomainWritePorts
+      collectors:
+        - type: classLike
+          value: '^App\\Domain\\Permit\\Port\\PermitRepositoryInterface$'
+    - name: ApplicationData
+      collectors:
+        - type: bool
+          must:
+            - type: classLike
+              value: '^App\\Application\\'
+          must_not:
+            - type: classLike
+              value: '^App\\Application\\(?:(?:Command|Query|Support|Port|Validator|Audit)\\|Authentication\\(?:AuthenticationService|AdminSessionService|LoginRateLimiter)$)'
+    - name: AuditService
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Audit\\'
+    - name: ApplicationValidators
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Validator\\'
+    - name: CommandMessages
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Command\\.*Command$'
+    - name: CommandHandlers
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Command\\.*Handler$'
+    - name: QueryMessages
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Query\\.*Query$'
+    - name: QueryHandlers
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Query\\.*Handler$'
+    - name: ApplicationSupport
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Support\\'
+    - name: TechnicalServices
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Authentication\\(?:AuthenticationService|AdminSessionService|LoginRateLimiter)$'
+    - name: ReadPorts
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Port\\(?:.*QueriesInterface|PermitLookupInterface)$'
+    - name: WritePorts
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Port\\(?:BlacklistManagementInterface|PermitCheckRecorderInterface|PermitCheckPrunerInterface|AdminAuditTrailInterface|InitialSettingsStoreInterface)$'
+    - name: ExternalPorts
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Port\\(?:QrCodeGeneratorInterface|MaintenanceLockInterface|TransactionInterface)$'
+    - name: TechnicalPorts
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Port\\(?:AdminSessionRepositoryInterface|LoginAttemptStoreInterface|SettingsProviderInterface)$'
+    - name: LoggingPorts
+      collectors:
+        - type: classLike
+          value: '^App\\Application\\Port\\LogContextInterface$'
+    - name: Console
+      collectors:
+        - type: classLike
+          value: '^App\\Console\\'
+    - name: ConsoleVendor
+      collectors:
+        - type: classLike
+          value: '^Symfony\\Component\\Console\\'
+    - name: Http
+      collectors:
+        - type: classLike
+          value: '^App\\Http\\'
+    - name: Diagnostics
+      collectors:
+        - type: classLike
+          value: '^App\\Infrastructure\\Diagnostics\\'
+    - name: Infrastructure
+      collectors:
+        - type: bool
+          must:
+            - type: classLike
+              value: '^App\\Infrastructure\\'
+          must_not:
+            - type: classLike
+              value: '^App\\Infrastructure\\Diagnostics\\'
+    - name: Migrations
+      collectors:
+        - type: classLike
+          value: '^Database\\Migrations\\'
+    - name: Composition
+      collectors:
+        - type: directory
+          value: '/(?:config|bootstrap|bin)/'
+    - name: CoreContracts
+      collectors:
+        - type: classLike
+          value: '^Psr\\(?:Clock|Log)\\'
+    - name: HttpContracts
+      collectors:
+        - type: classLike
+          value: '^Psr\\Http\\'
+    - name: HttpVendor
+      collectors:
+        - type: classLike
+          value: '^(?:Slim|Twig|Symfony\\Contracts\\Translation)\\'
+    - name: DatabaseRuntime
+      collectors:
+        - type: classLike
+          value: '^PDO(?:Exception|Statement)?$'
+    - name: InfrastructureVendor
+      collectors:
+        - type: classLike
+          value: '^(?:Doctrine|Monolog|Endroid|Sentry)\\'
+    - name: CompositionVendor
+      collectors:
+        - type: classLike
+          value: '^(?:DI|Symfony\\Component\\Translation)\\'
+  ruleset:
+    DomainValues: []
+    DomainServices: [DomainValues, DomainReadPorts]
+    DomainValidators: [DomainValues, DomainServices]
+    DomainReadPorts: [DomainValues]
+    DomainWritePorts: [DomainValues]
+    ApplicationData: [DomainValues]
+    ApplicationValidators: [CommandMessages, ApplicationData]
+    CommandMessages: [ApplicationData, DomainValues]
+    QueryMessages: [ApplicationData, DomainValues]
+    AuditService: [ApplicationData, WritePorts, CoreContracts]
+    CommandHandlers: [AuditService, ApplicationValidators, CommandMessages, ApplicationData, ApplicationSupport, WritePorts, DomainWritePorts, DomainValues, DomainServices, DomainValidators, ExternalPorts, CoreContracts]
+    QueryHandlers: [QueryMessages, ApplicationData, ApplicationSupport, ReadPorts, DomainValues, DomainServices, DomainValidators, CoreContracts]
+    ApplicationSupport: [ApplicationData, DomainValues, DomainServices, ExternalPorts]
+    TechnicalServices: [AuditService, ExternalPorts, ApplicationData, TechnicalPorts, CoreContracts]
+    ReadPorts: [ApplicationData, DomainValues]
+    WritePorts: [ApplicationData, DomainValues]
+    ExternalPorts: []
+    TechnicalPorts: [ApplicationData]
+    LoggingPorts: []
+    Console: [ApplicationData, CommandMessages, CommandHandlers, QueryMessages, QueryHandlers, CoreContracts, ConsoleVendor]
+    Http: [LoggingPorts, ApplicationData, CommandMessages, CommandHandlers, QueryMessages, QueryHandlers, TechnicalServices, DomainValues, CoreContracts, HttpContracts, HttpVendor]
+    Infrastructure: [LoggingPorts, ApplicationData, ReadPorts, WritePorts, ExternalPorts, TechnicalPorts, DomainValues, DomainServices, DomainReadPorts, DomainWritePorts, CoreContracts, DatabaseRuntime, InfrastructureVendor]
+    Diagnostics: [Infrastructure, ApplicationData, ReadPorts, TechnicalPorts, CoreContracts, InfrastructureVendor, HttpVendor]
+    Migrations: [DatabaseRuntime, InfrastructureVendor]
+    Composition: [LoggingPorts, AuditService, ApplicationValidators, Console, ConsoleVendor, ApplicationData, CommandMessages, CommandHandlers, QueryMessages, QueryHandlers, ApplicationSupport, TechnicalServices, ReadPorts, WritePorts, ExternalPorts, TechnicalPorts, DomainValues, DomainServices, DomainValidators, DomainReadPorts, DomainWritePorts, Http, Infrastructure, Diagnostics, Migrations, CoreContracts, HttpContracts, HttpVendor, DatabaseRuntime, InfrastructureVendor, CompositionVendor]

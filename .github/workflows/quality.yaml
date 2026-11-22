@@ -1,0 +1,178 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+  merge_group:
+    types: [checks_requested]
+  workflow_dispatch:
+  schedule:
+    - cron: '23 4 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality checks and MySQL
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Lint workflow
+        run: make lint-ci
+      - name: Start development image
+        run: make up
+      - name: Install locked dependencies
+        run: make composer ARGS='install --no-interaction --prefer-dist --no-progress'
+      - name: Run standard quality gates
+        run: make check
+      - name: Summarize PHP line coverage
+        run: |
+          {
+            printf '### PHP line coverage\n\n'
+            docker compose exec -T php php bin/check-coverage.php
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Check locked browser tooling
+        run: make browser-check
+      - name: Run isolated MySQL integration tests
+        run: make test-mysql
+      - name: Upload coverage and MySQL results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: quality-reports
+          path: |
+            .phpunit.cache/coverage/
+            .phpunit.cache/mysql/junit.xml
+            .phpunit.cache/mysql/index-review.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+      - name: Stop development services
+        if: always()
+        run: docker compose down --volumes
+
+  mutation:
+    name: Mutation testing
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Start development image
+        run: make up
+      - name: Install locked dependencies
+        run: make composer ARGS='install --no-interaction --prefer-dist --no-progress'
+      - name: Run mutation gates
+        run: make infection
+      - name: Upload mutation reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: mutation-reports
+          path: |
+            .infection.cache/infection.log
+            .infection.cache/summary.log
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+      - name: Stop development services
+        if: always()
+        run: docker compose down --volumes
+
+  release:
+    name: Production release
+    needs: [quality, mutation]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Start build environment
+        run: make up
+      - name: Lint deployment scripts
+        run: make lint-shell
+      - name: Build production archive
+        run: make release
+      - name: Test deployment layouts and rollback
+        run: make release-smoke
+      - name: Test browser workflows and printed QR codes
+        run: make test-browser
+      - name: Upload browser evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: browser-evidence
+          path: .phpunit.cache/browser/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Upload verified release
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: permit-manager-release
+          path: |
+            dist/permit-manager.tar.gz
+            dist/permit-manager.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14
+      - name: Stop build environment
+        if: always()
+        run: docker compose down --volumes
+
+  required:
+    name: Required checks
+    needs: [quality, mutation, release]
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require every verification job to succeed
+        env:
+          CI_QUALITY_RESULT: ${{ needs.quality.result }}
+          CI_MUTATION_RESULT: ${{ needs.mutation.result }}
+          CI_RELEASE_RESULT: ${{ needs.release.result }}
+        run: bash bin/check-ci-results.sh
+
+  publish:
+    name: Publish GitHub release
+    needs: [required]
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - name: Download this run's verified archive
+        run: gh run download "$GITHUB_RUN_ID" --name permit-manager-release --dir dist
+      - name: Verify archive checksum
+        working-directory: dist
+        run: sha256sum -c permit-manager.tar.gz.sha256
+      - name: Publish archive and checksum
+        run: |
+          release_flags=()
+          if [[ "$RELEASE_TAG" == *-* ]]; then
+            release_flags+=(--prerelease --latest=false)
+          fi
+          gh release create "$RELEASE_TAG" \
+            dist/permit-manager.tar.gz dist/permit-manager.tar.gz.sha256 \
+            --verify-tag --title "Permit Manager $RELEASE_TAG" --generate-notes \
+            --notes 'For deployment, download permit-manager.tar.gz and its .sha256 checksum. The archive includes production PHP dependencies; the automatic source-code downloads do not.' \
+            "${release_flags[@]}"

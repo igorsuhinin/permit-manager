@@ -1,0 +1,70 @@
+.wrapper {
+    width: 348px;
+    height: 240px;
+    border: 1px dotted #000;
+    position: relative;
+    box-sizing: border-box;
+    font-family: monospace;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 16px;
+}
+
+h2 {
+    font-size: 20px;
+    text-align: center;
+    padding: 2px;
+    margin: 0;
+}
+
+.valid {
+    color: rgb(117, 183, 152);
+}
+
+.not-valid {
+    color: rgb(234, 134, 143);
+}
+
+.qr {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 66px;
+    height: 66px;
+    opacity: 0.6;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.status-valid {
+    background-image: url('assets/icons/valid.svg');
+}
+
+.status-invalid {
+    background-image: url('assets/icons/invalid.svg');
+}
+
+.smaller {
+    font-size: 14px;
+}
+
+.Plate {
+    font-weight: normal;
+    font-style: normal;
+    border: 3px solid #000;
+    border-radius: 7px;
+    height: 26px;
+    font-size: 22px;
+    width: 121px;
+    margin: 12px auto 0;
+    text-align: center;
+}
+
+@media print {
+    body {
+        font-size: 10pt;
+    }
+}

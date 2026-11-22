@@ -1,0 +1,16 @@
+{% extends 'admin/base.html.twig' %}
+{% block navigation %}
+    <div class="admin-navigation order-lg-1 d-flex flex-wrap align-items-center gap-3">
+        <a class="text-decoration-none{{ activePage == 'permits' ? ' fw-bold' : '' }}" href="/admin/permits"{% if activePage == 'permits' %} aria-current="page"{% endif %}>{{ 'permits'|trans(locale) }}</a>
+        <a class="text-decoration-none{{ activePage == 'generate' ? ' fw-bold' : '' }}" href="/admin/permits/generate"{% if activePage == 'generate' %} aria-current="page"{% endif %}>{{ 'generate'|trans(locale) }}</a>
+        <a class="text-decoration-none{{ activePage == 'blacklist' ? ' fw-bold' : '' }}" href="/admin/blacklist"{% if activePage == 'blacklist' %} aria-current="page"{% endif %}>{{ 'blacklist.title'|trans(locale) }}</a>
+        <a class="text-decoration-none{{ activePage == 'checks' ? ' fw-bold' : '' }}" href="/admin/checks"{% if activePage == 'checks' %} aria-current="page"{% endif %}>{{ 'checks.title'|trans(locale) }}</a>
+    </div>
+{% endblock %}
+{% block account %}
+    <span class="d-none d-lg-inline text-secondary small">{{ username }}</span>
+    <form class="m-0" method="post" action="/admin/logout">
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <button class="btn btn-link btn-sm text-secondary text-nowrap p-0" type="submit">{{ 'sign_out'|trans(locale) }}</button>
+    </form>
+{% endblock %}

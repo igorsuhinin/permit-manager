@@ -1,0 +1,76 @@
+{% extends 'admin/layout.html.twig' %}
+{% set activePage = 'checks' %}
+{% block title %}{{ 'checks.title'|trans(locale) }}{% endblock %}
+{% block confirmation %}{% include 'admin/confirmation.html.twig' with {confirmationTitle: 'checks.confirm_title', confirmationAction: 'blacklist.add'} %}{% endblock %}
+{% block content %}
+<h1 id="checks-title" class="h3 mb-2">{{ 'checks.title'|trans(locale) }}</h1>
+<p class="text-secondary mb-4">{{ 'checks.description'|trans(locale) }}</p>
+{% include 'admin/error.html.twig' %}
+<form class="row g-2 mb-4" method="get" action="/admin/checks" role="search">
+    <div class="col-12 col-md">
+        <label class="visually-hidden" for="check-id">{{ 'permit_id'|trans(locale) }}</label>
+        <input class="form-control" id="check-id" type="search" name="q" value="{{ q }}" placeholder="{{ 'permit_id'|trans(locale) }}" maxlength="200">
+    </div>
+    <div class="col-12 col-md-auto">
+        <label class="visually-hidden" for="check-result">{{ 'checks.result'|trans(locale) }}</label>
+        <select class="form-select" id="check-result" name="result">
+            <option value="">{{ 'checks.all_results'|trans(locale) }}</option>
+            {% for outcome in outcomes %}
+                {% set value = outcome.value %}
+                <option value="{{ value }}"{% if result == value %} selected{% endif %}>{{ ('checks.result.' ~ value)|trans(locale) }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto"><button class="btn btn-primary" type="submit">{{ 'search'|trans(locale) }}</button></div>
+    {% if q is not same as('') or result is not same as('') %}<div class="col-auto"><a class="btn btn-outline-secondary" href="/admin/checks">{{ 'clear'|trans(locale) }}</a></div>{% endif %}
+</form>
+<div class="card shadow-sm table-responsive" role="region" aria-labelledby="checks-title" tabindex="0">
+    <table class="table table-hover align-middle mb-0" aria-labelledby="checks-title">
+        <thead class="table-light">
+            <tr><th scope="col">{{ 'checks.time'|trans(locale) }}</th><th scope="col">{{ 'permit_id'|trans(locale) }}</th><th scope="col">{{ 'apartment'|trans(locale) }}</th><th scope="col">{{ 'valid_until'|trans(locale) }}</th><th scope="col">{{ 'checks.result'|trans(locale) }}</th><th scope="col">{{ 'checks.reason'|trans(locale) }}</th><th scope="col">{{ 'actions'|trans(locale) }}</th></tr>
+        </thead>
+        <tbody>
+        {% for item in checks %}
+            {% set check = item.record %}
+            <tr>
+                <td class="text-nowrap">{{ check.checkedAt|date('d.m.Y H:i:s', timezone) }}</td>
+                <th scope="row" class="fw-normal text-break">
+                    {{ check.permitId ?? '—' }}
+                    {% if check.idTruncated %}<span class="badge text-bg-secondary">{{ 'checks.truncated'|trans(locale) }}</span>{% endif %}
+                </th>
+                <td class="text-break">{{ check.apartment ?? '—' }}</td>
+                <td class="text-nowrap">{{ check.expiresOn is null ? '—' : check.expiresOn|date('d.m.Y') }}</td>
+                <td><span class="badge {{ check.outcome.value == 'valid' ? 'text-bg-success' : (check.outcome.value == 'error' ? 'text-bg-danger' : 'text-bg-warning') }}">{{ ('checks.result.' ~ check.outcome.value)|trans(locale) }}</span></td>
+                <td>{{ check.reason is null ? '—' : ('checks.reason.' ~ check.reason.value)|trans(locale) }}</td>
+                <td>
+                    {% if item.blacklisted %}
+                        <span class="badge text-bg-danger">{{ 'status.Revoked'|trans(locale) }}</span>
+                        <form class="mt-1" method="post" action="{{ blacklistUrl }}" data-confirm="{{ 'blacklist.confirm_remove'|trans(locale, {'%id%': check.permitId}) }}" data-confirm-title="{{ 'blacklist.confirm_title'|trans(locale) }}" data-confirm-action="{{ 'blacklist.remove'|trans(locale) }}">
+                            <input type="hidden" name="csrf" value="{{ csrf }}">
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="id" value="{{ check.permitId }}">
+                            <button class="btn btn-outline-secondary btn-sm text-nowrap" type="submit" disabled>{{ 'blacklist.remove'|trans(locale) }}</button>
+                        </form>
+                    {% elseif item.canBlacklist %}
+                        <form method="post" action="{{ blacklistUrl }}" data-confirm="{{ 'checks.confirm_blacklist'|trans(locale, {'%id%': check.permitId}) }}">
+                            <input type="hidden" name="csrf" value="{{ csrf }}">
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" name="id" value="{{ check.permitId }}">
+                            <button class="btn btn-outline-danger btn-sm text-nowrap" type="submit" disabled>{{ 'blacklist.add'|trans(locale) }}</button>
+                        </form>
+                    {% else %}—{% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="7" class="text-center text-secondary py-5">{{ 'checks.empty'|trans(locale) }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<noscript><p class="text-secondary mt-3">{{ 'checks.enable_javascript'|trans(locale) }}</p></noscript>
+<nav class="d-flex justify-content-between align-items-center mt-3" aria-label="{{ 'checks.pages'|trans(locale) }}">
+    <div>{% if page > 1 %}<a class="btn btn-outline-secondary btn-sm" href="{{ previousUrl }}">{{ 'previous'|trans(locale) }}</a>{% endif %}</div>
+    <span class="small text-secondary">{{ 'checks.page_summary'|trans(locale, {'%page%': page, '%limit%': 25}) }}</span>
+    <div>{% if hasNext %}<a class="btn btn-outline-secondary btn-sm" href="{{ nextUrl }}">{{ 'next'|trans(locale) }}</a>{% endif %}</div>
+</nav>
+{% endblock %}

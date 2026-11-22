@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'Alte DIN 1451 Mittelschrift gepraegt';
+    src: url('AlteDIN1451Mittelschriftgepraegt.woff2') format('woff2'),
+        url('AlteDIN1451Mittelschriftgepraegt.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

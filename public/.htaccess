@@ -1,0 +1,26 @@
+DirectoryIndex index.php
+Options -Indexes -MultiViews
+Require all granted
+
+<IfModule mod_headers.c>
+    Header onsuccess unset Referrer-Policy
+    Header always set Referrer-Policy "no-referrer"
+    Header onsuccess unset X-Content-Type-Options
+    Header always set X-Content-Type-Options "nosniff"
+    Header onsuccess unset X-Frame-Options
+    Header always set X-Frame-Options "DENY"
+</IfModule>
+
+ErrorDocument 403 "403 Forbidden"
+ErrorDocument 404 "404 Not Found"
+ErrorDocument 500 "500 Internal Server Error"
+
+RewriteEngine On
+RewriteRule (^|/)\. - [F,L]
+
+# Keep legacy QR and generator paths routed through Slim.
+RewriteRule ^(?:permit(?:/(?:index\.php)?)?|p/check(?:\.php)?)$ index.php [QSA,END]
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+RewriteRule ^ index.php [QSA,L]

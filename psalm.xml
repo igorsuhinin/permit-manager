@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psalm xmlns="https://getpsalm.org/schema/config"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+       errorLevel="1"
+       phpVersion="8.5"
+       cacheDirectory=".psalm.cache"
+       findUnusedCode="false"
+       findUnusedPsalmSuppress="true"
+       threads="2">
+    <projectFiles>
+        <directory name="src"/>
+        <directory name="config"/>
+        <directory name="translations"/>
+        <directory name="migrations"/>
+        <directory name="bootstrap"/>
+        <directory name="tests"/>
+        <directory name="bin"/>
+        <file name="public/index.php"/>
+        <file name="rector.php"/>
+        <file name=".php-cs-fixer.dist.php"/>
+    </projectFiles>
+</psalm>

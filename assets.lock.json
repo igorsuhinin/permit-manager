@@ -1,0 +1,218 @@
+{
+    "files": [
+        {
+            "path": "vendor/bootstrap/5.3.8/bootstrap.min.css",
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "sha256": "d85327d99c7a3ee1f9b5d0500d1370acea3ad2db39c163c2f51f232baedbdede",
+            "license": "MIT",
+            "version": "5.3.8"
+        },
+        {
+            "path": "vendor/bootstrap/5.3.8/LICENSE",
+            "url": "https://raw.githubusercontent.com/twbs/bootstrap/v5.3.8/LICENSE",
+            "sha256": "4620c84ad5ce8602ff65640ed6b7c8b78ebb9e036584f0ebc1ccc88206a4bb51",
+            "license": "MIT",
+            "version": "5.3.8"
+        },
+        {
+            "path": "vendor/jquery/4.0.0/jquery.min.js",
+            "url": "https://code.jquery.com/jquery-4.0.0.min.js",
+            "sha256": "39a546ea9ad97f8bfaf5d3e0e8f8556adb415e470e59007ada9759dce472adaa",
+            "license": "MIT",
+            "version": "4.0.0"
+        },
+        {
+            "path": "vendor/jquery/4.0.0/LICENSE.txt",
+            "url": "https://raw.githubusercontent.com/jquery/jquery/4.0.0/LICENSE.txt",
+            "sha256": "d4db9ebe6f29f5168eac45ad713f055623ac5d0dcd5ba92da23d650ae012020d",
+            "license": "MIT",
+            "version": "4.0.0"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/jquery-ui.min.js",
+            "url": "https://code.jquery.com/ui/1.14.2/jquery-ui.min.js",
+            "sha256": "99b95259f6d8cdaabf7fee1a93232113a5c42c2a2ee236e480fbfe2503c44763",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/jquery-ui.css",
+            "url": "https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.css",
+            "sha256": "f08d29ae5d045deee58feeaf95ca979f898cbd97626e28cb438862fbb9efb722",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/images/ui-icons_444444_256x240.png",
+            "url": "https://code.jquery.com/ui/1.14.2/themes/base/images/ui-icons_444444_256x240.png",
+            "sha256": "6cc3b993997771d68d08b0daaf7713101afe80c613b903d92df5c7ab56f75412",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/images/ui-icons_555555_256x240.png",
+            "url": "https://code.jquery.com/ui/1.14.2/themes/base/images/ui-icons_555555_256x240.png",
+            "sha256": "1236707e2452dae4dfc909e62c30f719348d863734594441787b4b25bda8e71f",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/images/ui-icons_777620_256x240.png",
+            "url": "https://code.jquery.com/ui/1.14.2/themes/base/images/ui-icons_777620_256x240.png",
+            "sha256": "4c9505f919ef8025219ea75b7c610a859c0cd470a879033d256eb24274c162f3",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/images/ui-icons_777777_256x240.png",
+            "url": "https://code.jquery.com/ui/1.14.2/themes/base/images/ui-icons_777777_256x240.png",
+            "sha256": "26410c2b41a85e74cb6383558ccc823080dcf3eff73cb8582ac35eeab97f3133",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/images/ui-icons_cc0000_256x240.png",
+            "url": "https://code.jquery.com/ui/1.14.2/themes/base/images/ui-icons_cc0000_256x240.png",
+            "sha256": "849ecb82887c11e620354e80b55fdaa32984b40f8e266061daa8ce8c0412fc42",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/images/ui-icons_ffffff_256x240.png",
+            "url": "https://code.jquery.com/ui/1.14.2/themes/base/images/ui-icons_ffffff_256x240.png",
+            "sha256": "d95f988ed1c82b625ba6154e0097326a22c0d3eca95c2c57266159bdfdf268c5",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/jquery-ui/1.14.2/LICENSE.txt",
+            "url": "https://raw.githubusercontent.com/jquery/jquery-ui/1.14.2/LICENSE.txt",
+            "sha256": "f649025cf65c8dcd8588b0937883ba7a52bdb6d35129464a36a1602eb00250f1",
+            "license": "MIT",
+            "version": "1.14.2"
+        },
+        {
+            "path": "vendor/fonts/l7gdbjpo0cum0ckerWCdmA_OIxo.woff2",
+            "url": "https://fonts.gstatic.com/s/audiowide/v22/l7gdbjpo0cum0ckerWCdmA_OIxo.woff2",
+            "sha256": "bc0d2b852eb2c7c2048ef8852f0b41a9900a9b6b8b72bfa96efa0a1f4393458f",
+            "license": "OFL-1.1",
+            "version": "v22"
+        },
+        {
+            "path": "vendor/fonts/l7gdbjpo0cum0ckerWCdlg_O.woff2",
+            "url": "https://fonts.gstatic.com/s/audiowide/v22/l7gdbjpo0cum0ckerWCdlg_O.woff2",
+            "sha256": "e21fd195dd9dcdafc5a0f162a8fc252703f3683179861afb057cd58f9d27dbe5",
+            "license": "OFL-1.1",
+            "version": "v22"
+        },
+        {
+            "path": "vendor/fonts/H4ciBXCHmdfClFb-vWhf-LKYh563.woff2",
+            "url": "https://fonts.gstatic.com/s/fasterone/v20/H4ciBXCHmdfClFb-vWhf-LKYh563.woff2",
+            "sha256": "1c02f9171d876bc47241b59635ff4ab516ac42e10be7ba5a1cfb93fc0ac30ae6",
+            "license": "OFL-1.1",
+            "version": "v20"
+        },
+        {
+            "path": "vendor/fonts/H4ciBXCHmdfClFb-vWhf-LyYhw.woff2",
+            "url": "https://fonts.gstatic.com/s/fasterone/v20/H4ciBXCHmdfClFb-vWhf-LyYhw.woff2",
+            "sha256": "50b0df966346e4d16d3f19f18e46f9c7da18bb4726acf713a77b76e893e59a16",
+            "license": "OFL-1.1",
+            "version": "v20"
+        },
+        {
+            "path": "vendor/fonts/rax_HiWKp9EAITukFsl8Axhf.woff2",
+            "url": "https://fonts.gstatic.com/s/fugazone/v21/rax_HiWKp9EAITukFsl8Axhf.woff2",
+            "sha256": "79e8fb1228cec14f8ec640bfe4a41d30f1ef0f5ed919ae81b8018e54e0296a63",
+            "license": "OFL-1.1",
+            "version": "v21"
+        },
+        {
+            "path": "vendor/fonts/6NUR8FifJg6AfQvzpshgwJ8UwPVERtw.woff2",
+            "url": "https://fonts.gstatic.com/s/ralewaydots/v19/6NUR8FifJg6AfQvzpshgwJ8UwPVERtw.woff2",
+            "sha256": "79d98d1d3a6657dfeaa1fd7eb6edd4e0aafc10df163f9d13219715dbd334f3b1",
+            "license": "OFL-1.1",
+            "version": "v19"
+        },
+        {
+            "path": "vendor/fonts/6NUR8FifJg6AfQvzpshgwJ8UzvVE.woff2",
+            "url": "https://fonts.gstatic.com/s/ralewaydots/v19/6NUR8FifJg6AfQvzpshgwJ8UzvVE.woff2",
+            "sha256": "999b67ff9e771de8d2144643c4142dcc9830e49f0c3c2ead3ee994279a4c6425",
+            "license": "OFL-1.1",
+            "version": "v19"
+        },
+        {
+            "path": "vendor/fonts/audiowide-OFL.txt",
+            "url": "https://raw.githubusercontent.com/google/fonts/5bb28733cec313b63fbd415b574b5ae35c8aa8b8/ofl/audiowide/OFL.txt",
+            "sha256": "4fe01b13ffb41faa8f030d84843a95dab32792dfeeca7c072abbfd3f4d6896ad",
+            "license": "OFL-1.1",
+            "version": "5bb28733cec313b63fbd415b574b5ae35c8aa8b8"
+        },
+        {
+            "path": "vendor/fonts/fasterone-OFL.txt",
+            "url": "https://raw.githubusercontent.com/google/fonts/5bb28733cec313b63fbd415b574b5ae35c8aa8b8/ofl/fasterone/OFL.txt",
+            "sha256": "4da248dc81a7ea4cf5b23f9cf7a0f8cad900875b3f52a928befb5c51e82e9438",
+            "license": "OFL-1.1",
+            "version": "5bb28733cec313b63fbd415b574b5ae35c8aa8b8"
+        },
+        {
+            "path": "vendor/fonts/fugazone-OFL.txt",
+            "url": "https://raw.githubusercontent.com/google/fonts/5bb28733cec313b63fbd415b574b5ae35c8aa8b8/ofl/fugazone/OFL.txt",
+            "sha256": "5951473ab31533bfe1452bbcece47f237a5546c7e7d45ff1aec0289619623294",
+            "license": "OFL-1.1",
+            "version": "5bb28733cec313b63fbd415b574b5ae35c8aa8b8"
+        },
+        {
+            "path": "vendor/fonts/ralewaydots-OFL.txt",
+            "url": "https://raw.githubusercontent.com/google/fonts/5bb28733cec313b63fbd415b574b5ae35c8aa8b8/ofl/ralewaydots/OFL.txt",
+            "sha256": "e31de7000a2a13b2e54ad01e788fd29e979fe05ea1fded44d6e71cc06e33bb2b",
+            "license": "OFL-1.1",
+            "version": "5bb28733cec313b63fbd415b574b5ae35c8aa8b8"
+        },
+        {
+            "path": "vendor/fonts/fonts.css",
+            "url": "https://fonts.googleapis.com/css2?family=Audiowide&family=Faster+One&family=Fugaz+One&family=Raleway+Dots&display=swap",
+            "sha256": "84057faadd30a909aacc0a684432528828da1792d2fe46f206763339689a4326",
+            "license": "OFL-1.1",
+            "version": "see individual font URLs",
+            "localize": true,
+            "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+        }
+    ],
+    "legacy_files": [
+        {
+            "path": "permit/assets/fonts/AlteDIN1451Mittelschriftgepraegt.woff",
+            "url": null,
+            "sha256": "79263758653e5023c9e6755cfd8eb480da8a364cd88323fc472d7d9c5aaa5096",
+            "license": "NOASSERTION",
+            "version": "legacy-unverified"
+        },
+        {
+            "path": "permit/assets/fonts/AlteDIN1451Mittelschriftgepraegt.woff2",
+            "url": null,
+            "sha256": "0909406b27614cbcef8283077f92e9b399b29f1baaacd115f7a8aab4f0cd6492",
+            "license": "NOASSERTION",
+            "version": "legacy-unverified"
+        },
+        {
+            "path": "permit/assets/fonts/stylesheet.css",
+            "url": null,
+            "sha256": "433b33a44047c24e8e5835539d57ef2e43b383cde2f5f64f63f1e897c5121c85",
+            "license": "NOASSERTION",
+            "version": "legacy-unverified"
+        },
+        {
+            "path": "permit/assets/icons/invalid.svg",
+            "url": null,
+            "sha256": "80915d3aea9ecbf91bbcb97d21d0999f92883ad1bd83351a8815eaaacf8b1d2e",
+            "license": "NOASSERTION",
+            "version": "legacy-unverified"
+        },
+        {
+            "path": "permit/assets/icons/valid.svg",
+            "url": null,
+            "sha256": "073dfe88fa00979c19cd5dede4b62b421d2a49e84c5ddabf9a5d250d5c3fe759",
+            "license": "NOASSERTION",
+            "version": "legacy-unverified"
+        }
+    ]
+}
